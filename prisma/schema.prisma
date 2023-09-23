@@ -30,5 +30,5 @@ model Book {
   code String 
   title String
   author String
-  year DateTime
+  year String
 }
