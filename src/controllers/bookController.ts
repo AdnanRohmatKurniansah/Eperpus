@@ -37,13 +37,13 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const store = async (req: Request, res: Response, next: NextFunction) => {
+  const { error, value } = validate(req.body)
+  if (error) {
+    return res.status(422).json({
+      message: error.details[0].message
+    })
+  }
   try {
-    const { error, value } = validate(req.body)
-    if (error) {
-      return res.status(422).json({
-        message: error.details[0].message
-      })
-    }
     const response: any = await prisma.book.create({
       data: value
     })
@@ -59,13 +59,13 @@ export const store = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 export const update = async (req: Request, res: Response, next: NextFunction) => {
+  const { error, value } = validate(req.body)
+  if (error) {
+    return res.status(422).json({
+      message: error.details[0].message
+    })
+  }
   try {
-    const { error, value } = validate(req.body)
-    if (error) {
-      return res.status(422).json({
-        message: error.details[0].message
-      })
-    }
     const response: any = await prisma.book.update({
       where: {
         id: parseInt(req.params.id)
