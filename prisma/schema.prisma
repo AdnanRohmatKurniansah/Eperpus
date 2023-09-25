@@ -14,10 +14,12 @@ model User {
   id Int @id @default(autoincrement())
   username String @unique
   name String 
-  role Role
+  role Role @default(member)
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  borrow Borrow[]
+  return Return[]
 }
 
 enum Role {
@@ -27,8 +29,30 @@ enum Role {
 
 model Book {
   id Int @id @default(autoincrement())
-  code String 
+  code String @unique
   title String
   author String
   year String
+  borrow Borrow[]
+  return Return[]
+}
+
+model Borrow {
+  id Int @id @default(autoincrement())
+  borrow_date DateTime @default(now())
+  return_date DateTime @default(dbgenerated("NOW() + INTERVAL '7 day'"))
+  book Book @relation(fields: [id_book], references: [id])
+  id_book Int
+  user User @relation(fields: [id_user], references: [id])
+  id_user Int
+}
+
+model Return {
+  id Int @id @default(autoincrement())
+  return_date DateTime @default(now())
+  forfeit Int?
+  book Book @relation(fields: [id_book], references: [id])
+  id_book Int 
+  user User @relation(fields: [id_user], references: [id])
+  id_user Int
 }

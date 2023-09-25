@@ -125,6 +125,7 @@ export const refreshtoken = async (req: Request, res: Response, next: NextFuncti
       token: `Bearer ${token}`
     })
   } catch (error) {
+    res.clearCookie('refreshToken')
     res.status(500).json({
       message: error
     })
